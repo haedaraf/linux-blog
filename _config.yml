@@ -1,11 +1,22 @@
 title: linuxmd
-description: A blog about Linux, tinkering, and things that break in interesting ways.
+description: Linux info media — news, guides, and deep dives into how Linux really works.
 theme: jekyll-theme-hacker
 
 show_downloads: false
 
+# Navigation menu shown in the header on every page
+nav:
+  - title: Home
+    url: /
+  - title: Articles
+    url: /articles/
+  - title: About
+    url: /about/
+
 # Build settings
 markdown: kramdown
+permalink: /articles/:title/
+
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
