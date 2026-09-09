@@ -1,21 +1,22 @@
 title: linuxmd
-description: Linux info media — news, guides, and deep dives into how Linux really works.
+description: Media informasi Linux — berita, panduan, dan kupasan mendalam soal cara kerja Linux sesungguhnya.
+lang: id-ID
 theme: jekyll-theme-hacker
 
 show_downloads: false
 
-# Navigation menu shown in the header on every page
+# Menu navigasi yang tampil di header setiap halaman
 nav:
-  - title: Home
+  - title: Beranda
     url: /
-  - title: Articles
-    url: /articles/
-  - title: About
-    url: /about/
+  - title: Artikel
+    url: /artikel/
+  - title: Tentang
+    url: /tentang/
 
 # Build settings
 markdown: kramdown
-permalink: /articles/:title/
+permalink: /artikel/:title/
 
 plugins:
   - jekyll-feed
