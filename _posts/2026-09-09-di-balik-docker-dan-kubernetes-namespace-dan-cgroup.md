@@ -3,6 +3,7 @@ layout: post
 title: "Di Balik Docker dan Kubernetes: Sebenarnya Cuma Namespace dan Cgroup"
 date: 2026-09-09
 excerpt: "Docker dan Kubernetes terasa seperti sihir, padahal tidak ada kode khusus container di kernel Linux. Yang bekerja sebenarnya cuma dua mekanisme lawas — namespace dan cgroup."
+image: /assets/images/covers/namespace-cgroup.svg
 ---
 
 Dulu saya kira Docker punya semacam "mode container" rahasia yang tertanam di kernel. Ternyata
