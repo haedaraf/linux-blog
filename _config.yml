@@ -1,5 +1,6 @@
 title: linuxmd
 description: Media informasi Linux — berita, panduan, dan kupasan mendalam soal cara kerja Linux sesungguhnya.
+url: https://linuxmd.id
 lang: id-ID
 theme: jekyll-theme-hacker
 
@@ -15,6 +16,14 @@ nav:
     url: /kontribusi/
   - title: Tentang
     url: /tentang/
+
+# Gambar preview default saat link dibagikan (og:image), dipakai
+# kalau sebuah halaman/artikel tidak set `image` sendiri di front matter
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /assets/images/og/default.png
 
 # Build settings
 markdown: kramdown
