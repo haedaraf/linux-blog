@@ -67,8 +67,9 @@
 .post-cover {
   display: block;
   width: 100%;
-  height: auto;
+  height: 50px;
   border: 1px solid $dove-grey;
   border-radius: 4px;
   margin-bottom: 20px;
+  object-fit: cover;
 }
