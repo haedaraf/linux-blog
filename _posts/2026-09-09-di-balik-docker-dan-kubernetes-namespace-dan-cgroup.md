@@ -15,27 +15,31 @@ scheduler — cuma tooling yang dibungkus di atas dua hal itu.
 
 ## Sebenarnya apa yang diisolasi?
 
-Begini masalah yang harus dipecahkan sebuah container. Ia harus terasa seperti mesin kecilnya
-sendiri — punya filesystem sendiri, daftar proses sendiri, hostname sendiri, dan jatah CPU/memori
-sendiri supaya tidak menghabiskan sumber daya proses lain di mesin yang sama. Tapi kalau dikupas
-dari segala pemasaran, container itu cuma proses biasa, jalan di kernel yang sama persis dengan
-semua proses lain di host itu.
+Gimana caranya satu proses Linux bisa seolah-olah punya mesinnya sendiri — RAM sendiri, CPU
+sendiri, bahkan serasa punya OS sendiri — padahal jelas-jelas jalan berdampingan dengan ratusan
+proses lain di kernel yang sama?
 
-Jadi pertanyaannya: bagaimana caranya satu proses di kernel yang dipakai bersama itu bisa
-*mengira* dirinya punya mesin sendirian, sekaligus *berperilaku* hanya mengambil jatah yang adil?
+Itu masalah yang harus dipecahkan sebuah container: harus terasa seperti mesin kecilnya sendiri —
+punya filesystem sendiri, daftar proses sendiri, hostname sendiri, dan jatah CPU/memori sendiri
+supaya tidak menghabiskan sumber daya proses lain di mesin yang sama. Tapi kalau dikupas dari
+segala pemasaran, container itu cuma proses biasa, jalan di kernel yang sama persis dengan semua
+proses lain di host itu — jadi ia harus *mengira* dirinya punya mesin sendirian, sekaligus tetap
+*berperilaku* hanya mengambil jatah yang adil.
+
 Ternyata kernel sudah membagi tugas itu jadi dua bagian rapi. Namespace menentukan apa yang boleh
 **dilihat** oleh sebuah proses. Cgroup menentukan apa yang boleh **dipakainya**. Itu saja intinya.
 
-## Namespace: memberi proses gelembungnya sendiri
+## Namespace: jawaban agar aplikasi seolah-olah jalan di server terpisah
 
 Namespace mengambil satu sumber daya global yang dikelola kernel — process ID, antarmuka jaringan,
 mount point — lalu membungkusnya sehingga proses di dalam namespace itu hanya melihat salinan
-privatnya sendiri, bukan yang asli milik host. Linux punya beberapa jenis: `pid` menyembunyikan
-proses-proses lain di sistem sehingga container mengira aplikasinya adalah PID 1; `net` memberinya
-stack jaringan sendiri; `mnt` memberinya pandangan filesystem sendiri; `uts` membiarkannya
-mengatur hostname sendiri tanpa menyentuh punya host; `ipc` menjaga shared memory dan message
-queue tetap privat; dan `user` membuat "root" di dalam container jadi cuma pengguna biasa yang
-tidak punya hak istimewa apa pun di host.
+privatnya sendiri, bukan yang asli milik host. Efeknya persis seperti aplikasi itu dipindah ke
+server sendiri, padahal fisiknya tidak ke mana-mana. Linux punya beberapa jenis namespace: `pid`
+menyembunyikan proses-proses lain di sistem sehingga container mengira aplikasinya adalah PID 1;
+`net` memberinya stack jaringan sendiri; `mnt` memberinya pandangan filesystem sendiri; `uts`
+membiarkannya mengatur hostname sendiri tanpa menyentuh punya host; `ipc` menjaga shared memory
+dan message queue tetap privat; dan `user` membuat "root" di dalam container jadi cuma pengguna
+biasa yang tidak punya hak istimewa apa pun di host.
 
 Saat Docker menjalankan container, di baliknya ia cuma memanggil `clone()` dengan sederet flag
 `CLONE_NEW*`, dan proses hasilnya mendapat namespace baru yang kosong, bukan ikut namespace milik
@@ -65,7 +69,7 @@ host — namespace cuma mengatur apa yang terlihat, bukan seberapa banyak yang d
 kernel membatasi, mengukur, dan memprioritaskan apa yang boleh dikonsumsi kelompok itu secara
 keseluruhan.
 
-Inilah yang sebenarnya menegakkan batasan seperti ini:
+Contoh konkretnya, kalau kamu mau batasi jatah container sampai ketat:
 
 ```bash
 docker run --cpus="1.5" --memory="512m" my-image
